@@ -1,0 +1,116 @@
+---
+title: "IST687 - Music Classification Project"
+author: "Team 2 - Sebastian Castro, John Fields, Courtney Smith, Jeremy Wallner"
+date: "4/18/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Executive Summary
+
+## Table of Contents
+
+## Introduction
+
+## Related Work
+
+Thierry Bertin-Mahieux, Daniel P.W. Ellis, Brian Whitman, and Paul Lamere. 
+The Million Song Dataset. In Proceedings of the 12th International Society
+for Music Information Retrieval Conference (ISMIR 2011), 2011.
+
+## Dataset
+```{r import data}
+
+music <- read.csv(file="~/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/Project/Music Project/think.cs.vt.edu/music.csv",stringsAsFactors=FALSE)
+
+#Copy original data to a new dataframe music1 and exclude unneeded data
+music1 <- music[-c(2:5,16,19,21:25,30,34)]
+#Convert O to NA
+music1[music1==0] <- NA
+#Remove NA
+na.omit(music1)
+row_sub = apply(music1, 1, function(row) all(row !=0 ))
+music1[row_sub,]
+
+#Sort by Artist Hotttnesss
+music1sorted <- music1[order(-music1$artist.hotttnesss),]
+#Use sapply to see how many NA's are in the dataset
+sapply(music1sorted,function(x) sum(is.na(x)))
+#Add in a column with a label for artist hotttnesss - hot/warm/cold
+music1sorted["hotttnesss.label"]<-NA
+music1sorted$hotttnesss.label=ifelse(music1sorted$artist.hotttnesss<.4057,"Cold","Hot")
+summary(music1sorted$hotttnesss.label)
+```
+
+## Features
+
+```{r features}
+str(music)
+
+#Plot artists latitude and longitude
+plot(music$latitude,music$longitude)
+
+#Plot tracks per year
+hist(music$artist.hotttnesss)
+```
+#THIS IS INCOMPLETE CODE FOR PLOTTING ADDITIONAL DATA...
+#Create a map of the world
+mapWorld <- borders("world", colour="gray50", fill="white")
+
+#Code from https://rpubs.com/spoonerf/global_map
+#Need to figure out what to put in locs
+locs<-read.csv("my_locations.csv")
+locs<-
+sp_dups<-data.frame(ddply(locs,.(Longitude,Latitude),nrow))
+sp_dups$loc_id<-1:length(sp_dups$Longitude)
+sp_dups_df<-merge(sp_dups, locs, by=c("Longitude","Latitude"))
+
+loc<-data.frame(sp_dups_df$Longitude,sp_dups_df$Latitude,sp_dups_df$V1)
+loc<-unique(loc)
+colnames(loc)<-c("Longitude", "Latitude", "V1")
+
+coordinates(loc)<-c("Longitude","Latitude")
+proj4string(loc) <- CRS("+proj=longlat")
+
+loc_df<-data.frame(loc)
+
+theme_opts <- list(theme(panel.grid.minor = element_blank(),
+                         panel.grid.major = element_blank(),
+                         panel.background = element_blank(),
+                         plot.background = element_rect(fill="white"),
+                         panel.border = element_blank(),
+                         axis.line = element_blank(),
+                         axis.text.x = element_blank(),
+                         axis.text.y = element_blank(),
+                         axis.ticks = element_blank(),
+                         axis.title.x = element_blank(),
+                         axis.title.y = element_blank(),
+                         plot.title = element_text(size=22)))
+
+library(maps)
+library(mapdata)
+
+ggplot(data=loc_df, aes(Longitude, Latitude, group=NULL,fill=NULL,size=V1))+#, fill=hole)) + 
+  borders(fill="light grey",colour="light grey")+
+  geom_point(color="black",alpha=I(7/10))+
+  scale_size(range=c(1,7), guide = "legend",labs(size="No. of Populations"))+
+  coord_equal()+
+  theme_opts
+## Methods
+
+```{r methods}
+#Do analysis to determine hot/warm/cold artists based on hotttnesss
+
+#Run randomForest
+randomForest(music1sorted[,-23],music1sorted[,23])
+
+```
+
+## Results
+
+## Conclusion
+
+## Appendices
