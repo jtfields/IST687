@@ -172,6 +172,9 @@ rf2$confusion
 #rf <- randomForest(artist.hotness.label ~.,data=music1,ntree=200,mtry=8,
 #importance=TRUE,proximity=TRUE)
 
+#corrected line^
+rfx <- randomForest(artist.hotness.label ~.,data=music,ntree=200,mtry=8,importance=TRUE,proximity=TRUE)
+
 #Prediction & Confusion Matrix - train data
 #library(caret)
 #p1<-predict(rf,train)
