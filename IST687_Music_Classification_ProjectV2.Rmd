@@ -72,6 +72,8 @@ remove_na <- function(music,n=0)
   music <- as.data.frame.matrix(music)
   return (music)
   } 
+#8May to remove the na we can do "music <- na.omit(music)"
+
 
 #Copy original data to a new dataframe music1 and exclude unneeded data
 music <- music[-c(1:5,7,16,19,21:25,30,34)]
