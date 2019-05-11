@@ -66,13 +66,7 @@ unique(music$artist.hotness.label)
 #Hot(>.4590), Warm(<.4590 and >.3357), Cold(<.3357).  Four rows with blanks in 
 #famiiarity were also deleted.
 
-remove_na <- function(music,n=0)
-  {
-  music <- music[rowSums(is.na(music)) <= n,]
-  music <- as.data.frame.matrix(music)
-  return (music)
-  } 
-#8May to remove the na we can do "music <- na.omit(music)"
+music <- na.omit(music)
 
 
 #Copy original data to a new dataframe music1 and exclude unneeded data
