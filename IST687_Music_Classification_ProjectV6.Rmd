@@ -38,6 +38,11 @@ music <- read.csv("~/Intro data science/Music project/newmusic.csv")
 str(music)
 colnames(music)[1] <- "artist.hotttnesss"
 
+#New code from John - plot of the variables
+library(ggplot2)
+library(reshape2)
+ggplot(data = melt(music), mapping = aes(x = value)) + geom_histogram(bins = 20) + facet_wrap(~variable, scales = 'free_x')
+
 # New code from Jeremy importing of song list
 newmusic <- read.csv("~/Intro data science/Music project/newmusic.csv")
 #New code from Jeremy importing of song list
@@ -160,49 +165,25 @@ table(cmbomusic3$song.hotness.label)
 #hist(music$artist.hotttnesss,breaks=20)
 #hist(music$artist.hotness,breaks=20)
 ```
-#THIS IS INCOMPLETE CODE FOR PLOTTING ADDITIONAL DATA...
-#Create a map of the world
-mapWorld <- borders("world", colour="gray50", fill="white")
-
-#Code from https://rpubs.com/spoonerf/global_map
-#Need to figure out what to put in locs
-locs<-read.csv("my_locations.csv")
-locs<-
-sp_dups<-data.frame(ddply(locs,.(Longitude,Latitude),nrow))
-sp_dups$loc_id<-1:length(sp_dups$Longitude)
-sp_dups_df<-merge(sp_dups, locs, by=c("Longitude","Latitude"))
-
-loc<-data.frame(sp_dups_df$Longitude,sp_dups_df$Latitude,sp_dups_df$V1)
+```{r world map}
+#New code from John for creating a map of the world showing latitude/longitude and artist hotness
+#Code based on info from https://rpubs.com/spoonerf/global_map
+library(dplyr)
+loc<-data.frame(music$longitude,music$latitude,music$artist.hotttnesss)
 loc<-unique(loc)
-colnames(loc)<-c("Longitude", "Latitude", "V1")
-
-coordinates(loc)<-c("Longitude","Latitude")
-proj4string(loc) <- CRS("+proj=longlat")
-
+colnames(loc)<-c("longitude", "latitude","artist hotness")
 loc_df<-data.frame(loc)
-
-theme_opts <- list(theme(panel.grid.minor = element_blank(),
-                         panel.grid.major = element_blank(),
-                         panel.background = element_blank(),
-                         plot.background = element_rect(fill="white"),
-                         panel.border = element_blank(),
-                         axis.line = element_blank(),
-                         axis.text.x = element_blank(),
-                         axis.text.y = element_blank(),
-                         axis.ticks = element_blank(),
-                         axis.title.x = element_blank(),
-                         axis.title.y = element_blank(),
-                         plot.title = element_text(size=22)))
-
 library(maps)
 library(mapdata)
-
-ggplot(data=loc_df, aes(Longitude, Latitude, group=NULL,fill=NULL,size=V1))+#, fill=hole)) + 
+library(ggplot2)
+ahworld <- ggplot(data=loc_df, aes(longitude, latitude, group=NULL,fill=NULL,size=artist.hotness))+#, fill=hole)) + 
   borders(fill="light grey",colour="light grey")+
   geom_point(color="black",alpha=I(7/10))+
-  scale_size(range=c(1,7), guide = "legend",labs(size="No. of Populations"))+
+  scale_size(range=c(1,7), guide = "legend",labs(size="Artist Hotness"))+
   coord_equal()+
-  theme_opts
+  ggtitle("Artist Location by Hotness")
+ahworld
+```
   
 ## Methods
 ```{r methods}
