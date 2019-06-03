@@ -43,8 +43,13 @@ colnames(music)[1] <- "artist.hotttnesss"
 #Plot of the variables
 library(ggplot2)
 library(reshape2)
-ggplot(data = melt(music), mapping = aes(x = value)) + geom_histogram(bins = 20) + facet_wrap(~variable, scales = 'free_x')
 
+#understand the structure of the data
+#install.packages("psych")
+library(psych)
+describeBy(music,)
+
+ggplot(data = melt(music), mapping = aes(x = value)) + geom_histogram(bins = 20) + facet_wrap(~variable, scales = 'free_x')
 
 #New code from Jeremy importing of song list
 #newmusic <- read.csv("~/Intro data science/Music project/newmusic3.csv")
