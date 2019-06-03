@@ -3,8 +3,8 @@ title: "IST687 - Music Classification Project"
 author: "Team 2 - Sebastian Castro, John Fields, Courtney Smith, Jeremy Wallner"
 date: "5/13/2019"
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -34,12 +34,12 @@ for Music Information Retrieval Conference (ISMIR 2011), 2011.
 ## Dataset
 ```{r import data}
 #New code from Courtney to change from 3 to 5 categories of artist hotness
-music <- read.csv("~/Intro data science/Music project/newmusic.csv")
+music <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/Project/Data Files/think.cs.vt.edu/music.csv")
 str(music)
 colnames(music)[1] <- "artist.hotttnesss"
 
 #New code from Jeremy importing of song list
-newmusic <- read.csv("~/Intro data science/Music project/newmusic3.csv")
+newmusic <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/Project/Data Files/think.cs.vt.edu/newmusic3.csv")
 
 #head(newmusic)
 newmusic2 <- newmusic
@@ -230,35 +230,14 @@ rf2 <- randomForest(music[,-21:-22],music[,22])
 print(rf2)
 attributes(rf2)
 rf2$confusion
-#Run randomForest again with tune mtry data from below
-#rfx <- randomForest(artist.hotness.label ~.,data=music,ntree=200,mtry=8,importance=TRUE,proximity=TRUE)
-#Prediction & Confusion Matrix - train data
-#library(caret)
-#p1<-predict(rfx,train)
-#confusionMatrix(p1,train)
-#Predition & Confusion Matrix - test data
-#p2<-predict(rfx,test)
-#confusionMatrix(p2,test$artist.hotness.label)
+
 #Error rate of Random Forest
 plot(rf)
 plot(rf2)
 #The error rate is not improving after ~100 trees
-#Tune mtry
-#t <- tuneRF(train[,-21],train[,21],
-#           stepFactor=.5,
-#            plot=TRUE,
-#            ntreeTry=200,
-#            trace=TRUE,
-#            improve=0.05)
-#No. of nodes for the trees
-hist(treesize(rf),
-    main="Number of Nodes for the Trees",
-    col="green")
-hist(treesize(rf2),
-    main="Number of Nodes for the Trees",
-    col="green")
+
 # Variable Importance
-# Familiarity is much more important than the other variables.  Should it be removed and run again?
+# Familiarity is much more important than the other variables.
 varImpPlot(rf,
            sort=T,
            n.var=10,
@@ -271,10 +250,6 @@ varImpPlot(rf2,
            main="Top 10 - Variable Importance")
 importance(rf2)
 varUsed(rf2)
-#Mulit-dimenstional Scaling Plot
-#The code below causes R to lock up...
-#MDSplot(rf,train$artist.hotttnesss.label)
-
 
 cmbomusic4 <- na.omit(cmbomusic3)
 cmbomusic5 <- cmbomusic4[-c(1,3,7:9,13,17,20)]
@@ -287,10 +262,6 @@ attributes(rf3)
 rf3$confusion
 plot(rf3)
 
-
-hist(treesize(rf3),
-    main="Number of Nodes for the Trees",
-    col="blue")
 varImpPlot(rf3,
            sort=T,
            n.var=10,
