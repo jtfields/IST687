@@ -1,11 +1,9 @@
 ---
-  title: "IST687 - Music Classification Project"
-author: "Team 2 - Sebastian Castro, John Fields, Courtney Smith, Jeremy Wallner"
-date: "6/13/2019"
 output:
-  pdf_document: default
-word_document: default
+  word_document: default
+  html_document: default
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -203,7 +201,9 @@ songlc_dfwrld
 ## Methods - Linear Regression
 
 ```{r methods 1}
-# code from Juan
+library("PerformanceAnalytics")
+
+#code from Juan
 #Artist prediction
 lm1 <- lm(formula = music$artist.hotttnesss ~ music$year + music$bars_confidence +music$tempo + music$duration + music$start_of_fade_out + music$tatums_start + music$familiarity + music$latitude +  
 music$tempo + music$longitude + music$beats_start + music$beats_confidence +  music$end_of_fade_in) 
@@ -221,11 +221,18 @@ summary(lm2)
 summary(lm3)
 
 
-cor1 <- data.frame(music$artist.hotttnesss, music$year, music$bars_confidence, music$tempo, music$duration, music$start_of_fade_out, music$tatums_start, music$familiarity, music$latitude, music$tempo, music$longitude, music$beats_start, music$beats_confidence,music$end_of_fade_in)
-pairs(cor1, gap=0, cex.labels = 0.9)
+#Artist hotness correlation
+cor1 <- data.frame(music$artist.hotttnesss, music$year, music$familiarity, music$longitude)
+cor(cor1)
+
+chart.Correlation(cor1, histogram=TRUE, pch=10, cex.labels=2.9)
+
+#Song hotness correlation
+cor2 <- data.frame(cmbomusic3$song.hotttnesss, cmbomusic3$loudness, cmbomusic3$tempo)
+cor(cor2)
 
 
-
+chart.Correlation(cor2, histogram=TRUE, pch=10, cex.labels=2.9)
 
 ```
 
