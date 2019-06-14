@@ -1,8 +1,10 @@
 ---
+  title: "IST687 - Music Classification Project"
+author: "Team 2 - Sebastian Castro, John Fields, Courtney Smith, Jeremy Wallner"
+date: "6/13/2019"
 output:
-  html_document: default
   pdf_document: default
-  word_document: default
+word_document: default
 ---
 
 ```{r setup, include=FALSE}
