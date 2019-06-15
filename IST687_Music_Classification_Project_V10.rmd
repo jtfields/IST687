@@ -234,6 +234,21 @@ cor(cor2)
 
 chart.Correlation(cor2, histogram=TRUE, pch=10, cex.labels=2.9)
 
+#svm
+library(kernlab)
+library(e1071)
+rndm <- sample(1:dim(music)[1])
+summary(rndm)
+length(rndm)
+cut <- floor(2 * dim(music)[1]/3)
+cut
+train <- music[rndm[1:cut],]
+test <- music[rndm[(cut + 1):dim(music)[1]],]
+svmO <- ksvm(artist.hotttnesss.label ~ ., data=train, kernel= "rbfdot", kpar="automatic", C=5, cross=3, prob.model=TRUE)
+svmO
+svmP <- predict(svmO, test, type= "votes")
+comp <- data.frame(test[,22], svmP[1,])
+table(comp)
 ```
 
 ## Methods - Random Forest
