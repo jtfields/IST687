@@ -1,7 +1,8 @@
 ---
 output:
-  word_document: default
+  pdf_document: default
   html_document: default
+  word_document: default
 ---
 
 
@@ -34,10 +35,10 @@ for Music Information Retrieval Conference (ISMIR 2011), 2011.
 ## Dataset
 ```{r import data}
 #New code from Courtney to change from 3 to 5 categories of artist hotness
+music <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/GitHub Music Project/newmusic.csv")
 #music <- read.csv("~/Intro data science/Music project/newmusic.csv")
-setwd("X:/Users/Courtney/Downloads")
-
-music <- read.csv("music.csv")
+#setwd("X:/Users/Courtney/Downloads")
+#music <- read.csv("music.csv")
 str(music)
 colnames(music)[1] <- "artist.hotttnesss"
 #Plot of the variables
@@ -50,7 +51,7 @@ describeBy(music,)
 ggplot(data = melt(music), mapping = aes(x = value)) + geom_histogram(bins = 20) + facet_wrap(~variable, scales = 'free_x')
 #New code from Jeremy importing of song list
 #newmusic <- read.csv("~/Intro data science/Music project/newmusic3.csv")
-newmusic <- read.csv("newmusic3.csv")
+newmusic <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/GitHub Music Project/newmusic3.csv")
 #head(newmusic)
 newmusic2 <- newmusic
 newmusic3 <- newmusic2[-c(1:2,4:9,11,13:14,19:20,23,36)]
@@ -231,7 +232,8 @@ chart.Correlation(cor1, histogram=TRUE, pch=10, cex.labels=2.9)
 cor2 <- data.frame(cmbomusic3$song.hotttnesss, cmbomusic3$loudness, cmbomusic3$tempo)
 cor(cor2)
 
-
+#install.packages("PerformanceAnalytics")
+library(PerformanceAnalytics)
 chart.Correlation(cor2, histogram=TRUE, pch=10, cex.labels=2.9)
 
 #svm
@@ -265,30 +267,29 @@ train <- music[ind==1,]
 test <- music[ind==2,]
 #Run randomForest on 3 levels
 library(randomForest)
-set.seed(222)
-rf <- randomForest(music[,-21:-22],music[,21])
-print(rf)
-attributes(rf)
-rf$confusion
+#John commented out rf because it is running against the same file (music) as rf2
+#set.seed(222)
+#rf <- randomForest(music[,c(-1,-21,-22)],music[,21])
+#print(rf)
+#attributes(rf)
+#rf$confusion
 #Run randomForest on 5 levels
+#John added -1 to remove the hotness variable from the rf
 library(randomForest)
 set.seed(222)
-rf2 <- randomForest(music[,-21:-22],music[,22])
+rf2 <- randomForest(music[,c(-1,-22,-23)],music[,22])
 print(rf2)
 attributes(rf2)
 rf2$confusion
 #Error rate of Random Forest
-plot(rf)
+#plot(rf)
 plot(rf2)
 #The error rate is not improving after ~100 trees
 # Variable Importance
 # Familiarity is much more important than the other variables.
-varImpPlot(rf,
-           sort=T,
-           n.var=10,
-           main="Top 10 - Variable Importance")
-importance(rf)
-varUsed(rf)
+#varImpPlot(rf,sort=T,n.var=10,main="Top 10 - Variable Importance")
+#importance(rf)
+#varUsed(rf)
 varImpPlot(rf2,
            sort=T,
            n.var=10,
