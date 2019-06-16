@@ -35,7 +35,7 @@ for Music Information Retrieval Conference (ISMIR 2011), 2011.
 ## Dataset
 ```{r import data}
 #New code from Courtney to change from 3 to 5 categories of artist hotness
-music <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/GitHub Music Project/newmusic.csv")
+#music <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/GitHub Music Project/newmusic.csv")
 #music <- read.csv("~/Intro data science/Music project/newmusic.csv")
 #setwd("X:/Users/Courtney/Downloads")
 #music <- read.csv("music.csv")
