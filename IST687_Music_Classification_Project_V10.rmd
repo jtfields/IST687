@@ -1,10 +1,9 @@
 ---
-output:
-  pdf_document: default
-  html_document: default
-  word_document: default
+title: "IST687 - Final Project: Music Classification"
+author: "Sebastian Castro, John Fields, Courtney Smith, Jeremy Wallner"
+date: "6/18/2019"
+output: pdf_document
 ---
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -35,7 +34,7 @@ for Music Information Retrieval Conference (ISMIR 2011), 2011.
 ## Dataset
 ```{r import data}
 #New code from Courtney to change from 3 to 5 categories of artist hotness
-#music <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/GitHub Music Project/newmusic.csv")
+music <- read.csv("/Users/johnfields/Library/Mobile Documents/com~apple~CloudDocs/Syracuse/IST687/GitHub Music Project/newmusic.csv")
 #music <- read.csv("~/Intro data science/Music project/newmusic.csv")
 #setwd("X:/Users/Courtney/Downloads")
 #music <- read.csv("music.csv")
@@ -226,14 +225,14 @@ summary(lm3)
 cor1 <- data.frame(music$artist.hotttnesss, music$year, music$familiarity, music$longitude)
 cor(cor1)
 
+#install.packages("PerformanceAnalytics")
+library(PerformanceAnalytics)
 chart.Correlation(cor1, histogram=TRUE, pch=10, cex.labels=2.9)
 
 #Song hotness correlation
 cor2 <- data.frame(cmbomusic3$song.hotttnesss, cmbomusic3$loudness, cmbomusic3$tempo)
 cor(cor2)
 
-#install.packages("PerformanceAnalytics")
-library(PerformanceAnalytics)
 chart.Correlation(cor2, histogram=TRUE, pch=10, cex.labels=2.9)
 
 #svm
@@ -249,7 +248,7 @@ test <- music[rndm[(cut + 1):dim(music)[1]],]
 svmO <- ksvm(artist.hotttnesss.label ~ ., data=train, kernel= "rbfdot", kpar="automatic", C=5, cross=3, prob.model=TRUE)
 svmO
 svmP <- predict(svmO, test, type= "votes")
-comp <- data.frame(test[,22], svmP[1,])
+comp <- data.frame(test[,22],(svmP[1,]))
 table(comp)
 ```
 
@@ -261,12 +260,12 @@ table(comp)
 #at https://www.youtube.com/watch?v=dJclNIN-TPo
 #Data Partition - ind = independent samples
 #The code below runs in console but not R Markdown
-set.seed(123)
-ind<- sample(2,nrow(music), replace=TRUE,prob=c(0.7,0.3))
-train <- music[ind==1,]
-test <- music[ind==2,]
+#set.seed(123)
+#ind<- sample(2,nrow(music), replace=TRUE,prob=c(0.7,0.3))
+#train <- music[ind==1,]
+#test <- music[ind==2,]
 #Run randomForest on 3 levels
-library(randomForest)
+#library(randomForest)
 #John commented out rf because it is running against the same file (music) as rf2
 #set.seed(222)
 #rf <- randomForest(music[,c(-1,-21,-22)],music[,21])
