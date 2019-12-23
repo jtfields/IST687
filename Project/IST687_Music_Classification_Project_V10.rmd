@@ -310,8 +310,3 @@ varImpPlot(rf3,
            n.var=10,
            main="Top 10 - Variable Importance")
 ```
-## Results
-
-## Conclusion
-
-## Appendices
